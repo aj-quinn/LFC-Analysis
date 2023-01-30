@@ -1,0 +1,49 @@
+---
+title: "TAA Analysis"
+output: html_document
+---
+
+```{r}
+library(readr)
+library(tidyverse)
+library(plotly)
+```
+
+```{r}
+df <- read_csv("Data/TAA 5 yr PL Stats, as of 1-22-23.csv")
+```
+
+```{r}
+df$`Shots on target %` <- as.numeric(gsub("[\\%,]", "", df$`Shots on target %`))
+df$`Pass Completion %` <- as.numeric(gsub("[\\%,]", "", df$`Pass Completion %`))
+df$`Pass Completion % (Short)` <- as.numeric(gsub("[\\%,]", "", df$`Pass Completion % (Short)`))
+df$`Pass Completion % (Medium)` <- as.numeric(gsub("[\\%,]", "", df$`Pass Completion % (Medium)`))
+df$`Pass Completion % (Long)` <- as.numeric(gsub("[\\%,]", "", df$`Pass Completion % (Long)`))
+df$`% of dribblers tackled` <- as.numeric(gsub("[\\%,]", "", df$`% of dribblers tackled`))
+df$`Successful Dribble %` <- as.numeric(gsub("[\\%,]", "", df$`Successful Dribble %`))
+df$`% of Aerials Won` <- as.numeric(gsub("[\\%,]", "", df$`% of Aerials Won`))
+```
+
+```{r}
+colnames(df)
+```
+
+```{r}
+ggplot(df, aes(x=xAG, y=Assists, color=Season)) +
+  geom_point(size=4) +
+  labs(title = "Assists vs xAG By Season") +
+  theme_minimal()
+```
+```{r}
+df %>% select(Season,
+              Age,
+              `Minutes Played`,
+              Assists,
+              xAG) %>%
+  mutate(Overperformance = (Assists-xAG)/xAG)
+```
+
+
+
+
+
